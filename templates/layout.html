@@ -3,9 +3,27 @@ $def with (content)
 <html>
 	<head> 
 		<title>Orange Eternal Waterbird</title>
-		<link rel="stylesheet" type="text/css" href="static/main.css">
+		<link rel="shortcut icon" href="http://localhost:8080/static/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" type="text/css" href="http://localhost:8080/static/main.css">
+		<script type="text/javascript" src="http://localhost:8080/static/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript">
+			jQuery(document).ready(function() {
+
+				var d = new Date().getDate();
+				jQuery('#'+ d).css('border','2px solid red');
+
+				jQuery('td').click(function() {
+					var year = $('table').attr('id').match('\\d{4}')
+					var month = $('table').attr('id').match('\\d{2}')
+					window.location.replace('/date/' + year + month + jQuery(this).attr('id') );
+				})
+			});
+		</script>
 	</head>
 	<body>
-		$:content
+		<div id='header'></div>
+		<div id = 'content'>
+			$:content
+		</div>
 	</body>
 </html>

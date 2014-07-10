@@ -1,0 +1,9 @@
+CREATE TABLE TestingDates
+(
+Id date NOT NULL,
+Deadline datetime,
+Body text,
+Created timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+Modified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+PRIMARY KEY (Id) 
+);

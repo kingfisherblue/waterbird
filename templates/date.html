@@ -1,0 +1,13 @@
+$def with (entry, session)
+
+<header> $session.month $session.day </header>
+
+<div id = 'entry'>
+	$for i in entry:
+		<br> $i.Body
+</div>
+
+<form action="/date" method="POST">
+    <input type="text" name="entry">
+    <input type="submit">
+</form>
