@@ -10,12 +10,16 @@ $def with (content)
 			jQuery(document).ready(function() {
 
 				var d = new Date().getDate();
+				if (d < 10) { d = '0'+d }
+
 				jQuery('#'+ d).css('border','2px solid red');
 
 				jQuery('td').click(function() {
-					var year = $('table').attr('id').match('\\d{4}')
-					var month = $('table').attr('id').match('\\d{2}')
-					window.location.replace('/date/' + year + month + jQuery(this).attr('id') );
+					var year = jQuery('table').attr('id').match('\\d{4}')
+					var month = jQuery('table').attr('id').match('\\d{2}\$')
+					console.log(year + '-' + month + '-' + jQuery(this).attr('id'))
+					window.location.replace('/date/' + year + '-' + 
+											month + '-' + jQuery(this).attr('id'));
 				})
 			});
 		</script>

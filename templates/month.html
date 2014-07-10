@@ -17,10 +17,9 @@ $def with (cal, session)
 			$for day in week:
 				$if int(day) == 0:
 					<td id = 'blank'> </td>
-				$elif int(day) < 10:
-					<td id = 0$day> $day </td>
+				$elif int(day) >= 10:
+					<td id = $day> $day </td>
 				$else:
-					<<td id = $day> $day </td>
-
+					<<td id = 0$day> $day </td>
 			</tr>
 	</table>

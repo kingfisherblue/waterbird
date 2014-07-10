@@ -1,43 +1,47 @@
 import web
 import calendar
-import time
-import utils
+from waterbird.utils import *
 
 urls = (
 	'/', 'index',
 	'/month', 'month',
-	# '/date', 'date',
-	'/date/(.+)', 'date2'
-	# '/date=(.+)', 'date2'
+	'/date/(.+)', 'date',
+	'/error', 'error'
 )
 
 web.config.debug = False
 
 app = web.application(urls, globals())
 session = web.session.Session(app, web.session.DiskStore('sessions'))
-db = web.database(dbn='mysql', user='waterbird_admin', pw='orange', db='waterbird_db')
 render = web.template.render('templates/', base='layout', globals={'session': session})
-calendar.setfirstweekday(calendar.SUNDAY)
+db = web.database(dbn='mysql', user='waterbird_admin', pw='orange', db='waterbird_db')
 
 class index():
 	def GET(self):
-		session.month = time.strftime('%m')
-		session.day = time.strftime('%d')
-		session.year = time.strftime('%y')
+		setSession(session)
 		web.seeother('/month')
 
 class month():
 	def GET(self):
-		y = int(session.year)
-		m = int(session.month)
-		c = calendar.monthcalendar(y, m)
+		c = getMonthCalendar(int(session.year), int(session.month))
 		return render.month(cal=c, session=session)
 
 class date():
-	def GET(self):
-		d = 'Id=\'%s-%s-%s\'' % (session.year, session.month, session.day)
+	def GET(self, params):
+		pd = parseDateUrl(params)
+		if 'day' not in pd:
+			web.seeother('/error')
+
+		year = pd['year']
+		month = pd['month']
+		day = pd['day']
+
+		d = 'Id=\'%s-%s-%s\'' % (year, month, day)
 		e = db.select('dates', what='Body', where=d)
+		
+		setSession(session, year, month, day)
 		return render.date(entry=e, session=session)
+
 
 	def POST(self):
 		e = web.input().entry.strip()
@@ -49,23 +53,10 @@ class date():
 			db.insert('dates', id=d, body=e)
 		raise web.seeother('/date')
 
-class date2():
-	def GET(self, params):
-		date_input = params.split('-')
-		year = date_input[0]
-		month = date_input[1] if len(date_input[1]) == 2 else '0'+ date_input[1]
-		day = date_input[2] if len(date_input[2]) == 2 else '0'+ date_input[2]
-
-		d = 'Id=\'%s-%s-%s\'' % (year, month, day)
-		e = db.select('dates', what='Body', where=d)
-		session.year = year
-		session.month = month
-		session.day = day
-		return render.date(entry=e, session=session)
-
+class error():
+	def GET(self):
+		return render.index('Something is wrong with that url.')
 
 if __name__ == "__main__":
 	app.run()
 
-
-# 'month':time.strftime('%m'), 'day':time.strftime('%d')
