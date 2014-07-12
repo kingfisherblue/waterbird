@@ -1,7 +1,7 @@
 $def with (cal, session)
 
 	<table id = 'calendar $session.year-$session.month'>
-		<tr><th id='month-header'>$session.month</th></tr>
+		<tr><th id='month-header' colspan="7">$calmonth[int(session.month)]</th></tr>
 		<tr id='weekdays'>
 			<th>Sunday</th>
 			<th>Monday</th>
@@ -20,6 +20,6 @@ $def with (cal, session)
 				$elif int(day) >= 10:
 					<td id = $day> $day </td>
 				$else:
-					<<td id = 0$day> $day </td>
+					<td id = 0$day> $day </td>
 			</tr>
 	</table>

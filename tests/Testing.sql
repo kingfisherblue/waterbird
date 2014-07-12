@@ -1,3 +1,5 @@
+USE WATERBIRD_DB;
+
 CREATE TABLE TestingDates
 (
 Id date NOT NULL,

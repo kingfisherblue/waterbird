@@ -5,27 +5,90 @@ $def with (content)
 		<title>Orange Eternal Waterbird</title>
 		<link rel="shortcut icon" href="http://localhost:8080/static/favicon.ico" type="image/x-icon">
 		<link rel="stylesheet" type="text/css" href="http://localhost:8080/static/main.css">
+		<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,700' rel='stylesheet' type='text/css'>
 		<script type="text/javascript" src="http://localhost:8080/static/jquery-2.1.1.min.js"></script>
 		<script type="text/javascript">
-			jQuery(document).ready(function() {
+            function DropDown(el) {
+                this.dd = el;
+                this.placeholder = this.dd.children('span');
+                this.opts = this.dd.find('ul.dropdown > li');
+                this.val = '';
+                this.index = -1;
+                this.initEvents();
+            }
 
-				var d = new Date().getDate();
-				if (d < 10) { d = '0'+d }
+            DropDown.prototype = {
+                initEvents : function() {
+                    var obj = this;
 
-				jQuery('#'+ d).css('border','2px solid red');
+                    obj.dd.on('click', function(event) {
+                        jQuery(this).toggleClass('active');
+                        return false;
+                    });
 
-				jQuery('td').click(function() {
-					var year = jQuery('table').attr('id').match('\\d{4}')
-					var month = jQuery('table').attr('id').match('\\d{2}\$')
-					console.log(year + '-' + month + '-' + jQuery(this).attr('id'))
-					window.location.replace('/date/' + year + '-' + 
-											month + '-' + jQuery(this).attr('id'));
-				})
-			});
-		</script>
+                    obj.opts.on('click', function() {
+                        var opt = jQuery(this);
+                        obj.val = opt.text();
+                        obj.index = opt.index();
+                        obj.placeholder.text(obj.val)
+                    });
+                },
+
+                getValue : function() {
+                    return this.val;
+                },
+
+                getIndex : function() {
+                    return this.index;
+                }
+            }
+
+            jQuery(function () {
+                var dd = new DropDown(jQuery('#dd'));
+
+                jQuery(document).click(function() {
+                    jQuery('.wrapper-dropdown').removeClass('active');
+                });
+            });
+
+            jQuery(document).ready(function() {
+
+                
+
+                var d = new Date().getDate();
+                if (d < 10) { d = '0'+d }
+
+                jQuery('#'+ d).addClass('today');
+
+                jQuery('td').click(function() {
+                    var year = jQuery('table').attr('id').match('\\d{4}');
+                    var month = jQuery('table').attr('id').match('\\d{2}\$');
+                    window.location.replace('/date/'+year+'-'+month + '-' + jQuery(this).attr('id'));
+                })
+
+            });
+            
+        </script>
 	</head>
 	<body>
-		<div id='header'></div>
+	    <header>
+	        <h1> Waterbird </h1>
+	        <nav>
+	            <div id ='dd' class='wrapper-dropdown'>
+	                <span> User </span>
+	                <ul class='dropdown'>
+	                    <li><a href='#'>View all entries</a></li>
+	                    <li><a href='#'>Settings</a></li>
+	                    <li><a href='#'>Log out</a></li>
+	                </ul>
+	            </div>
+	            <div id ='tasks' class='wrapper-dropdown'>
+	                <span> Tasks </span>
+	                <ul class='dropdown'>
+	                </ul>
+	            </div>
+	        </nav>
+	    </header>
 		<div id = 'content'>
 			$:content
 		</div>
