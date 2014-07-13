@@ -1,7 +1,11 @@
-$def with (cal, session)
+$def with (cal)
 
 	<table id = 'calendar $session.year-$session.month'>
-		<tr><th id='month-header' colspan="7">$calmonth[int(session.month)]</th></tr>
+		<tr>
+			<th id='month-header' colspan="7">$calmonth[int(session.month)]</th>
+			<a href='/prev'> <div class='left-triangle'></div> </a>
+			<a href='/next'> <div class='right-triangle'></div> </a>
+		</tr>
 		<tr id='weekdays'>
 			<th>Sunday</th>
 			<th>Monday</th>

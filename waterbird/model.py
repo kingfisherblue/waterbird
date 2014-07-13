@@ -8,8 +8,8 @@ TABLE = 'dates'
 
 class Model(object):
 
-	def __init__(self, table=TABLE):
-		self.db = web.database(dbn='mysql', user=USERNAME, pw=PASSWORD, db=DBNAME)
+	def __init__(self, db=DBNAME):
+		self.db = web.database(dbn='mysql', user=USERNAME, pw=PASSWORD, db=db)
 
 	def getMonthEntries(self, year, month, table=TABLE):
 		query = 'Id LIKE \'%04d-%02d-__\'' % (int(year), int(month))

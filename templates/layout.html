@@ -1,12 +1,19 @@
-$def with (content)
+$def with (content, path=".")
 
 <html>
 	<head> 
 		<title>Orange Eternal Waterbird</title>
-		<link rel="shortcut icon" href="http://localhost:8080/static/favicon.ico" type="image/x-icon">
-		<link rel="stylesheet" type="text/css" href="http://localhost:8080/static/main.css">
-		<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,700' rel='stylesheet' type='text/css'>
-		<script type="text/javascript" src="http://localhost:8080/static/jquery-2.1.1.min.js"></script>
+		<link rel="shortcut icon" href="$path/static/favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" type="text/css" href="$path/static/main.css">
+		<script type="text/javascript" src="$path/static/jquery-2.1.1.min.js"></script>
+
+        <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,700' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
+
+      <!-- Redactor -->
+        <link rel="stylesheet" href="http://localhost:8080/static/redactor/redactor/redactor.css" />
+        <script src="$path/static/redactor/redactor/redactor.js"></script>
+
 		<script type="text/javascript">
             function DropDown(el) {
                 this.dd = el;
@@ -51,21 +58,18 @@ $def with (content)
                 });
             });
 
+
             jQuery(document).ready(function() {
 
-                
-
-                var d = new Date().getDate();
-                if (d < 10) { d = '0'+d }
-
-                jQuery('#'+ d).addClass('today');
+                if ($session.year == $session.curr_year && $session.month == $session.curr_month) {
+                    jQuery('#'+ $session.curr_day).addClass('today');
+                }
 
                 jQuery('td').click(function() {
                     var year = jQuery('table').attr('id').match('\\d{4}');
                     var month = jQuery('table').attr('id').match('\\d{2}\$');
                     window.location.replace('/date/'+year+'-'+month + '-' + jQuery(this).attr('id'));
-                })
-
+                });
             });
             
         </script>

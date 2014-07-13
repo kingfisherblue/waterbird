@@ -1,13 +1,45 @@
-$def with (entry, session)
+$def with (entry)
 
-<header> $session.month $session.day </header>
-
-<div id = 'entry'>
-	$for i in entry:
-		<br> $i.Body
-</div>
-
-<form action="/date" method="POST">
-    <input type="text" name="entry">
-    <input type="submit">
+<span id = 'entry-header'>$calmonth[int(session.month)] $session.day </span>
+<form action="/date/$session.year-$session.month-$session.day" method="POST">
+    <div id="entry-textarea">
+    		$for i in entry:
+				$:i.Body
+    </div>
+    <textarea id="hiddeninput" name="entry" style="display: none;"></textarea>
+    <input id ="submit-button" type="submit" value="SAVE" style="display: none;"> 
 </form>
+
+<script type="text/javascript">
+
+    jQuery(function () {
+
+    	jQuery('#entry-textarea').click(function() {
+    		jQuery('#entry-textarea').redactor();
+    		jQuery('#submit-button').show();
+    	});
+
+    	jQuery('#submit-button').click(function() {
+    		var entry_text = jQuery('#entry-textarea').html();
+    		jQuery('#hiddeninput').val(entry_text);
+    		jQuery("#entry-textarea").destroyEditor();
+            jQuery('#submit-button').hide();
+    	});
+
+        jQuery(document).mouseup(function(e) {
+        	jQuery('.wrapper-dropdown').removeClass('active');
+        	jQuery('#submit-button').show();
+
+        	// !!! removes redactor on clicking outside. sadly does not make sense 
+        	// when there is a save button
+
+      //   	var container = jQuery('.redactor_box');
+		    // if (container.length != 0 && container.has(e.target).length == 0)  
+		    // {		        
+      //       	jQuery("#entry-textarea").destroyEditor();
+      //       	jQuery('#submit-button').hide();
+		    // }
+        });
+    });
+
+</script>

@@ -20,8 +20,8 @@ header {
 	height:		45px;
 	top:		0px;
 	background-image: linear-gradient(#EEA525, #E2B938);
-/*	text-align:	justify;*/
 	font-family: 'Roboto Slab', serif;
+	z-index: 	1;
 }
 
 header * {
@@ -34,29 +34,19 @@ header h1 {
 	font-family: 'Roboto Slab', serif;
 }
 
+header h1::before {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;  
+    height: 100%;
+}
+
 nav {
 	display: flex;
 	position: absolute;
 	top: 0;
 	right: 0;
 }
-
-/*header h1::before {
-	content:	'';
-	display: inline-block;
-	vertical-align: middle;
-	height:		100%;
-}
-*/
-/*header h1, header nav {
-	display: block;
-}*/
-
-/*header::after {
-	content:	'';
-	display: 	inline-block;
-	width: 		100%;
-}*/
 
 #content {
 	margin-top: 50px;
@@ -65,8 +55,7 @@ nav {
 table {
 	width: 95%;
 	border-collapse:	collapse;
-	margin-left: auto;
-	margin-right: auto;
+	margin: auto auto 20px auto;
 }
 
 th#month-header {
@@ -143,3 +132,59 @@ ul.dropdown {
 	list-style-type: none;
 }
 
+#entry-textarea, .redactor_box {
+	background-image: url('linedpaper.png');
+	width:				80%;
+	min-width:			300px;
+	margin: 20px auto 10px auto;
+	line-height: 		1.5;
+	min-height: 		300px;
+	font-family: 'Noto Sans', sans-serif;
+	line-height: 		2;
+	display: 	block;
+	outline: 	none;
+}
+
+#entry-textarea:not(.redactor_editor), div.redactor_box {
+	padding:			20px;
+	border: 15px solid rgba(174, 166, 159, 0.18);
+}
+
+span#entry-header {
+	display: block;
+	font-size: 32px;
+	font-family: monospace;
+	width: 	80%;
+	margin: 100px auto 10px auto;
+}
+
+input#submit-button {
+	margin-left: 10%;
+	width: 70px;
+	border: none;
+	border-radius: 5px;
+	height: 30px;
+	letter-spacing: 5;
+	background: rgba(177, 184, 163, 0.41);
+	outline: none;
+	text-align: 	center;
+}
+
+input#submit-button:hover {
+	background: rgba(177, 184, 163, 1);
+}
+
+.right-triangle, .left-triangle {
+	height: 0;
+	width: 0;
+	border-width: 15px 0 15px 15px;
+	border-color: transparent black;
+	border-style: solid;
+	display: inline-block;
+	float:	right;
+}
+
+.left-triangle {
+	border-width: 15px 15px 15px 0;
+	float:	left;
+}

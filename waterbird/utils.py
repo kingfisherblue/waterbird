@@ -11,6 +11,23 @@ def setSession(session, y = time.strftime('%Y'), m = time.strftime('%m'), d = ti
 	session.month = m
 	session.day = d
 	session.year = y
+	session.curr_month = m
+	session.curr_day = d
+	session.curr_year = y
+
+def setNext(session):
+	if int(session.month) == 12:
+		session.year = '%d' % (int(session.year) + 1)
+		session.month = '%d' % 1
+	else:
+		session.month = int(session.month) + 1
+
+def setPrev(session):
+	if int(session.month) == 1:
+		session.year = '%d' % (int(session.year) - 1)
+		session.month = '%d' % 12
+	else:
+		session.month = int(session.month) - 1
 
 def getMonthCalendar(year, month):
 	calendar.setfirstweekday(calendar.SUNDAY)

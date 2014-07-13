@@ -6,6 +6,8 @@ from waterbird.model import Model
 urls = (
 	'/', 'index',
 	'/month', 'month',
+	'/prev', 'prev',
+	'/next', 'next',
 	'/date/(.+)', 'date',
 	'/error', 'error'
 )
@@ -15,7 +17,7 @@ web.config.debug = False
 app = web.application(urls, globals())
 session = web.session.Session(app, web.session.DiskStore('sessions'))
 globals = {'calmonth': calendar.month_name, 'session':session}
-render = web.template.render('templates/', base='layout', globals=globals)
+render = web.template.render('templates/', globals=globals)
 db = Model()
 
 class index():
@@ -26,7 +28,18 @@ class index():
 class month():
 	def GET(self):
 		c = getMonthCalendar(int(session.year), int(session.month))
-		return render.month(cal=c, session=session)
+		mon = render.month(cal=c)
+		return render.layout(content=mon)
+
+class prev():
+	def GET(self):
+		setPrev(session)
+		return web.seeother('/month')
+
+class next():
+	def GET(self):
+		setNext(session)
+		return web.seeother('/month')
 
 class date():
 	def GET(self, params):
@@ -40,13 +53,15 @@ class date():
 		setSession(session, year, month, day)
 
 		entry = db.getDateEntry(year, month, day)
-		return render.date(entry=entry, session=session)
+		da = render.date(entry=entry)
+		return render.layout(da, '..')
 
 
-	def POST(self):
+	def POST(self, url):
 		entry = web.input().entry.strip()
 		db.updateEntry(entry, session.year, session.month, session.day)
-		raise web.seeother('/date')
+		same = '/date/%s-%s-%s' % (session.year, session.month, session.day)
+		raise web.seeother(same)
 
 class error():
 	def GET(self):
