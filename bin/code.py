@@ -59,7 +59,8 @@ class date():
 
 	def POST(self, url):
 		entry = web.input().entry.strip()
-		db.updateEntry(entry, session.year, session.month, session.day)
+		if entry != '':
+			db.updateEntry(entry, session.year, session.month, session.day)
 		same = '/date/%s-%s-%s' % (session.year, session.month, session.day)
 		raise web.seeother(same)
 

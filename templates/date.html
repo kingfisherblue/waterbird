@@ -21,9 +21,13 @@ $def with (entry)
 
     	jQuery('#submit-button').click(function() {
     		var entry_text = jQuery('#entry-textarea').html();
-    		jQuery('#hiddeninput').val(entry_text);
-    		jQuery("#entry-textarea").destroyEditor();
-            jQuery('#submit-button').hide();
+    		// checks for actual text and not just tags
+    		// needs testing
+    		if (entry_text.match('[^<>]\\s*(\\w)+[\\s\\w]*[^<>]') != null) {
+	    		jQuery('#hiddeninput').val(entry_text);
+	    		jQuery("#entry-textarea").destroyEditor();
+	            jQuery('#submit-button').hide();
+        	}
     	});
 
         jQuery(document).mouseup(function(e) {
