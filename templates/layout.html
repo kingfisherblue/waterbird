@@ -7,10 +7,11 @@ $def with (content, path=".")
 		<link rel="stylesheet" type="text/css" href="$path/static/main.css">
 		<script type="text/javascript" src="$path/static/jquery-2.1.1.min.js"></script>
 
+        <!-- Fonts -->
         <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,700' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
 
-      <!-- Redactor -->
+        <!-- Redactor -->
         <link rel="stylesheet" href="$path/static/redactor/redactor/redactor.css" />
         <script src="$path/static/redactor/redactor/redactor.js"></script>
 
@@ -29,7 +30,8 @@ $def with (content, path=".")
                     var obj = this;
 
                     obj.dd.on('click', function(event) {
-                        jQuery(this).toggleClass('active');
+                        jQuery('.wrapper-dropdown').removeClass('active');
+                        jQuery(this).addClass('active');
                         return false;
                     });
 
@@ -38,6 +40,8 @@ $def with (content, path=".")
                         obj.val = opt.text();
                         obj.index = opt.index();
                         obj.placeholder.text(obj.val)
+                        obj.dd.removeClass('active');
+                        event.stopPropagation();
                     });
                 },
 
@@ -51,7 +55,11 @@ $def with (content, path=".")
             }
 
             jQuery(function () {
-                var dd = new DropDown(jQuery('#dd'));
+                var dds = jQuery.find('.wrapper-dropdown');
+                for (i=0; i<dds.length; i++) {
+                    var dd = new DropDown(jQuery(dds[i]));
+                }
+
 
                 jQuery(document).click(function() {
                     jQuery('.wrapper-dropdown').removeClass('active');
@@ -78,16 +86,21 @@ $def with (content, path=".")
 	    <header>
 	        <h1> Waterbird </h1>
 	        <nav>
-                <div id ='dd' class='wrapper-dropdown'>
-                    <span> User </span>
+                <div id ='date-dd' class='wrapper-dropdown'>
+                    <span> Go to </span>
                     <ul class='dropdown'>
-                        <li><a href='#'>Today</a></li>
-                        <li><a href='#'>Someday</a></li>
-                        <li><a href='#'>Doomsday</a></li>
+                        <li><a href='/date/$session.year-$session.month-$session.day'>Today</a></li>
+                        <li><a href='/month'>Month View</a></li>
+                        <li><a href='#'>
+                            <form action="/date" method="GET">
+                                <input type="text" value='YYYY-YY-DD'/>
+                                <input type="submit">
+                            </form>
+                        </a></li>
                     </ul>
                 </div>
 
-	            <div id ='dd' class='wrapper-dropdown'>
+	            <div id ='user-dd' class='wrapper-dropdown'>
 	                <span> User </span>
 	                <ul class='dropdown'>
 	                    <li><a href='#'>View all entries</a></li>
@@ -95,7 +108,7 @@ $def with (content, path=".")
 	                    <li><a href='#'>Log out</a></li>
 	                </ul>
 	            </div>
-	            <div id ='tasks' class='wrapper-dropdown'>
+	            <div id ='tasks-dd' class='wrapper-dropdown'>
 	                <span> Tasks </span>
 	                <ul class='dropdown'>
 	                </ul>

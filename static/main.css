@@ -104,14 +104,14 @@ td.today {
 	padding:	10px;
 	outline:	none;
 	cursor:		pointer;
-	min-width:    	120px;
+	min-width:  100px;
 }
 
 .wrapper-dropdown .dropdown {
 	position:	absolute;
 	top:		100%;
 	right:		0;
-
+	min-width:  100px;
 	opacity:	0;
 	pointer-events:	none;
 }
