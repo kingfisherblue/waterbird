@@ -8,46 +8,42 @@ def intToMonth(i):
 	return calendar.month_name[i]
 
 def setSession(session, y = time.strftime('%Y'), m = time.strftime('%m'), d = time.strftime('%d')):
-	session.month = m
-	session.day = d
-	session.year = y
-	session.curr_month = m
-	session.curr_day = d
-	session.curr_year = y
+	session.month = int(m)
+	session.day = int(d)
+	session.year = int(y)
+	session.curr_month = int(m)
+	session.curr_day = int(d)
+	session.curr_year = int(y)
 
 def setNext(session):
 	if int(session.month) == 12:
-		session.year = '%d' % (int(session.year) + 1)
-		session.month = '%d' % 1
+		session.year = session.year + 1
+		session.month = 1
 	else:
-		session.month = int(session.month) + 1
+		session.month = session.month + 1
 
 def setPrev(session):
 	if int(session.month) == 1:
-		session.year = '%d' % (int(session.year) - 1)
-		session.month = '%d' % 12
+		session.year = session.year - 1
+		session.month = 12
 	else:
-		session.month = int(session.month) - 1
-
-def getMonthCalendar(year, month):
-	calendar.setfirstweekday(calendar.SUNDAY)
-	return calendar.monthcalendar(year, month)
+		session.month = session.month - 1
 
 ''' Parses string of format YYYY-MM-DD or YYYY-MM. Returns dictionary \
-	ex. '2014-07-01' becomes {'year': '2014', 'month':'07', 'day':'01'} '''
+	ex. '2014-07-01' becomes {'year': 2014, 'month': 7, 'day': 1} '''
 def parseDateUrl(url):
 	result = {}
 	try:
 		time_s = time.strptime(url,'%Y-%m-%d')
-		result['day'] = '%02d' % time_s.tm_mday
+		result['day'] = int(time_s.tm_mday)
 	except ValueError, TypeError:
 		try:
 			time_s = time.strptime(url,'%Y-%m')
 		except ValueError, TypeError:
 			return False
 
-	result['year'] = time_s.tm_year
-	result['month'] = '%02d' % time_s.tm_mon
+	result['year'] = int(time_s.tm_year)
+	result['month'] = int(time_s.tm_mon)
 	return result
 
 

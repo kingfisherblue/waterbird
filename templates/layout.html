@@ -11,7 +11,7 @@ $def with (content, path=".")
         <link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
 
       <!-- Redactor -->
-        <link rel="stylesheet" href="http://localhost:8080/static/redactor/redactor/redactor.css" />
+        <link rel="stylesheet" href="$path/static/redactor/redactor/redactor.css" />
         <script src="$path/static/redactor/redactor/redactor.js"></script>
 
 		<script type="text/javascript">
@@ -66,9 +66,9 @@ $def with (content, path=".")
                 }
 
                 jQuery('td').click(function() {
-                    var year = jQuery('table').attr('id').match('\\d{4}');
-                    var month = jQuery('table').attr('id').match('\\d{2}\$');
-                    window.location.replace('/date/'+year+'-'+month + '-' + jQuery(this).attr('id'));
+                    // var year = jQuery('table').attr('id').match('\\d{4}');
+                    // var month = jQuery('table').attr('id').match('\\d{1,2}\$');
+                    window.location.replace('/date/'+$session.year+'-'+$session.month + '-' + jQuery(this).attr('id'));
                 });
             });
             
@@ -78,6 +78,15 @@ $def with (content, path=".")
 	    <header>
 	        <h1> Waterbird </h1>
 	        <nav>
+                <div id ='dd' class='wrapper-dropdown'>
+                    <span> User </span>
+                    <ul class='dropdown'>
+                        <li><a href='#'>Today</a></li>
+                        <li><a href='#'>Someday</a></li>
+                        <li><a href='#'>Doomsday</a></li>
+                    </ul>
+                </div>
+
 	            <div id ='dd' class='wrapper-dropdown'>
 	                <span> User </span>
 	                <ul class='dropdown'>

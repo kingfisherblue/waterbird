@@ -1,8 +1,8 @@
-$def with (cal)
+$def with (month)
 
-	<table id = 'calendar $session.year-$session.month'>
+	<table id = 'calendar $month.year-$month.month'>
 		<tr>
-			<th id='month-header' colspan="7">$calmonth[int(session.month)]</th>
+			<th id='month-header' colspan="7">$calmonth[month.month]</th>
 			<a href='/prev'> <div class='left-triangle'></div> </a>
 			<a href='/next'> <div class='right-triangle'></div> </a>
 		</tr>
@@ -16,14 +16,22 @@ $def with (cal)
 			<th>Saturday</th>
 		</tr>
 
-		$for week in cal:
-			<tr>
-			$for day in week:
-				$if int(day) == 0:
-					<td id = 'blank'> </td>
-				$elif int(day) >= 10:
-					<td id = $day> $day </td>
-				$else:
-					<td id = 0$day> $day </td>
-			</tr>
+		$ i = 0
+		$for day in month.days:
+			$if i == 0:
+				<tr>
+			$if day == False:
+				<td id = 'blank'> </td>
+			$else:
+				<td id = $day.date_t.day> $day.date_t.day 
+				$if day.hasEntry:
+					<img src='./static/favicon.ico' class='entry_icon'>
+				</td>
+
+			$if i == 6:
+				</tr>
+				$ i = 0
+			$else:
+				$ i += 1
+
 	</table>

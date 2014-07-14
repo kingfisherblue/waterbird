@@ -94,6 +94,11 @@ td.today {
 	border:	2px solid red;
 }
 
+.entry_icon {
+	width: 15px;
+	float: right;
+}
+
 .wrapper-dropdown {
 	position:	relative;
 	padding:	10px;

@@ -1,10 +1,9 @@
 $def with (entry)
 
-<span id = 'entry-header'>$calmonth[int(session.month)] $session.day </span>
+<span id = 'entry-header'>$calmonth[session.month] $session.day </span>
 <form action="/date/$session.year-$session.month-$session.day" method="POST">
     <div id="entry-textarea">
-    		$for i in entry:
-				$:i.Body
+    		$:entry
     </div>
     <textarea id="hiddeninput" name="entry" style="display: none;"></textarea>
     <input id ="submit-button" type="submit" value="SAVE" style="display: none;"> 

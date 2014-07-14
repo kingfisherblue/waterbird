@@ -2,6 +2,8 @@ import web
 import calendar
 from waterbird.utils import *
 from waterbird.model import Model
+from waterbird.month import Month
+from waterbird.date import Date
 
 urls = (
 	'/', 'index',
@@ -20,6 +22,9 @@ globals = {'calmonth': calendar.month_name, 'session':session}
 render = web.template.render('templates/', globals=globals)
 db = Model()
 
+# Session will be all INTEGERS
+# No more left padding
+
 class index():
 	def GET(self):
 		setSession(session)
@@ -27,9 +32,9 @@ class index():
 
 class month():
 	def GET(self):
-		c = getMonthCalendar(int(session.year), int(session.month))
-		mon = render.month(cal=c)
-		return render.layout(content=mon)
+		month = Month(int(session.year), int(session.month))
+		month_page = render.month(month=month)
+		return render.layout(content=month_page)
 
 class prev():
 	def GET(self):
@@ -52,21 +57,22 @@ class date():
 		day = pd['day']
 		setSession(session, year, month, day)
 
-		entry = db.getDateEntry(year, month, day)
-		da = render.date(entry=entry)
+		date_obj = Date(session.year, session.month, session.day)
+		da = render.date(entry=date_obj.entry)
+
 		return render.layout(da, '..')
 
 
 	def POST(self, url):
 		entry = web.input().entry.strip()
-		if entry != '':
-			db.updateEntry(entry, session.year, session.month, session.day)
+		date_obj = Date(session.year, session.month, session.day)
+		date_obj.updateEntry(entry)
 		same = '/date/%s-%s-%s' % (session.year, session.month, session.day)
 		raise web.seeother(same)
 
 class error():
 	def GET(self):
-		return render.index('Something is wrong.')
+		return render.index('Something is terribly wrong.')
 
 if __name__ == "__main__":
 	app.run()

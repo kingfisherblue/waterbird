@@ -18,8 +18,8 @@ class Model(object):
 
 	def getDateEntry(self, year, month, day, table=TABLE):
 		query = 'Id=\'%s-%s-%s\'' % (year, month, day)
-		entries = self.db.select(table, what='Body', where=query)
-		return entries
+		entry = self.db.select(table, what='Body', where=query)
+		return entry
 
 
 	def updateEntry(self, text, year, month, day, table=TABLE):
