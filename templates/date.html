@@ -1,13 +1,19 @@
-$def with (entry)
+$def with (days)
 
-<span id = 'entry-header'>$calmonth[session.month] $session.day </span>
-<form action="/date/$session.year-$session.month-$session.day" method="POST">
-    <div id="entry-textarea">
-    		$:entry
-    </div>
-    <textarea id="hiddeninput" name="entry" style="display: none;"></textarea>
-    <input id ="submit-button" type="submit" value="SAVE" style="display: none;"> 
-</form>
+
+$def makeEntry(d):
+	<span id = 'entry-header'>$calmonth[day.date_t.month] $day.date_t.day</span>
+	<form action="/date" method="POST">
+	    <div id="entry-textarea">
+	    		$:d.entry
+	    </div>
+	    <textarea id="hiddeninput" name="entry" style="display: none;"></textarea>
+	    <input id ="submit-button" type="submit" value="SAVE" style="display: none;"> 
+	</form>
+
+$for day in days:
+	$if day and day.hasEntry:
+		$:makeEntry(day)
 
 <script type="text/javascript">
 

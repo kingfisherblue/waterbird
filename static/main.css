@@ -193,3 +193,18 @@ input#submit-button:hover {
 	border-width: 15px 15px 15px 0;
 	float:	left;
 }
+
+.tooltip {
+	opacity: 0;
+	margin-top: -20px;
+	background: rgb(118, 165, 212);
+	padding: 3px;
+	border: 2px solid white;
+	transition: all 0.3s ease-out;
+}
+
+.tooltip.active {
+	opacity: 1;
+	margin-top: -5px;
+	transition: all 0.3s ease-out;
+}

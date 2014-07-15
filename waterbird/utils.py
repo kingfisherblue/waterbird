@@ -11,9 +11,9 @@ def setSession(session, y = time.strftime('%Y'), m = time.strftime('%m'), d = ti
 	session.month = int(m)
 	session.day = int(d)
 	session.year = int(y)
-	session.curr_month = int(m)
-	session.curr_day = int(d)
-	session.curr_year = int(y)
+	session.curr_month = int(time.strftime('%Y'))
+	session.curr_day = int(time.strftime('%m'))
+	session.curr_year = int(time.strftime('%d'))
 
 def setNext(session):
 	if int(session.month) == 12:

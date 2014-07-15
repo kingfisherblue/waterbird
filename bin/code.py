@@ -1,5 +1,6 @@
 import web
 import calendar
+from web import form
 from waterbird.utils import *
 from waterbird.model import Model
 from waterbird.month import Month
@@ -10,8 +11,10 @@ urls = (
 	'/month', 'month',
 	'/prev', 'prev',
 	'/next', 'next',
-	'/date/(.+)', 'date',
-	'/error', 'error'
+	'/date', 'date',
+	'/error', 'error',
+	'/login', 'login',
+	'/entries', 'entries'
 )
 
 web.config.debug = False
@@ -27,8 +30,8 @@ db = Model()
 
 class index():
 	def GET(self):
-		setSession(session)
-		web.seeother('/month')
+			setSession(session)
+			web.seeother('/month')
 
 class month():
 	def GET(self):
@@ -47,8 +50,8 @@ class next():
 		return web.seeother('/month')
 
 class date():
-	def GET(self, params):
-		pd = parseDateUrl(params)
+	def GET(self):
+		pd = parseDateUrl(web.input().date)
 		if pd == False or 'day' not in pd:
 			web.seeother('/error')
 
@@ -58,17 +61,38 @@ class date():
 		setSession(session, year, month, day)
 
 		date_obj = Date(session.year, session.month, session.day)
-		da = render.date(entry=date_obj.entry)
+		if not date_obj.hasEntry:
+			date_obj.hasEntry = True
+			date_obj.entry = ''  # dummy entry for div to show up
 
+		da = render.date(days=[date_obj])
 		return render.layout(da, '..')
 
 
-	def POST(self, url):
+	def POST(self):
 		entry = web.input().entry.strip()
 		date_obj = Date(session.year, session.month, session.day)
 		date_obj.updateEntry(entry)
-		same = '/date/%s-%s-%s' % (session.year, session.month, session.day)
+		same = '/date?date=%s-%s-%s' % (session.year, session.month, session.day)
 		raise web.seeother(same)
+
+class login():
+	def GET(self):
+		lform = form.Form(
+			form.Textbox('Username:'),
+			form.Textbox('Password:'))
+
+		return render.layout(render.login(form=lform))
+
+	def POST(self):
+		return 'POST'
+
+class entries():
+	def GET(self):
+		month = Month(int(session.year), int(session.month))
+		da = render.date(days=month.days)
+
+		return render.layout(da, '..')
 
 class error():
 	def GET(self):

@@ -40,7 +40,6 @@ $def with (content, path=".")
                         obj.val = opt.text();
                         obj.index = opt.index();
                         obj.placeholder.text(obj.val)
-                        obj.dd.removeClass('active');
                         event.stopPropagation();
                     });
                 },
@@ -61,7 +60,7 @@ $def with (content, path=".")
                 }
 
 
-                jQuery(document).click(function() {
+                jQuery(document).click(function(event) {
                     jQuery('.wrapper-dropdown').removeClass('active');
                 });
             });
@@ -76,7 +75,7 @@ $def with (content, path=".")
                 jQuery('td').click(function() {
                     // var year = jQuery('table').attr('id').match('\\d{4}');
                     // var month = jQuery('table').attr('id').match('\\d{1,2}\$');
-                    window.location.replace('/date/'+$session.year+'-'+$session.month + '-' + jQuery(this).attr('id'));
+                    window.location.replace('/date?date='+$session.year+'-'+$session.month + '-' + jQuery(this).attr('id'));
                 });
             });
             
@@ -89,12 +88,12 @@ $def with (content, path=".")
                 <div id ='date-dd' class='wrapper-dropdown'>
                     <span> Go to </span>
                     <ul class='dropdown'>
-                        <li><a href='/date/$session.year-$session.month-$session.day'>Today</a></li>
+                        <li><a href='/date?date=$session.curr_year-$session.curr_month-$session.curr_day'>Today</a></li>
                         <li><a href='/month'>Month View</a></li>
                         <li><a href='#'>
-                            <form action="/date" method="GET">
-                                <input type="text" value='YYYY-YY-DD'/>
-                                <input type="submit">
+                            <form action="/date" method="get">
+                                <input id='get-date-input' name='date' type="text" value='2014-07-14'/>
+                                <input id='get-date-submit' type="submit" />
                             </form>
                         </a></li>
                     </ul>
@@ -103,7 +102,7 @@ $def with (content, path=".")
 	            <div id ='user-dd' class='wrapper-dropdown'>
 	                <span> User </span>
 	                <ul class='dropdown'>
-	                    <li><a href='#'>View all entries</a></li>
+	                    <li><a href='/entries'>View all entries</a></li>
 	                    <li><a href='#'>Settings</a></li>
 	                    <li><a href='#'>Log out</a></li>
 	                </ul>

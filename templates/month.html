@@ -25,7 +25,7 @@ $def with (month)
 			$else:
 				<td id = $day.date_t.day> $day.date_t.day 
 				$if day.hasEntry:
-					<img src='./static/favicon.ico' class='entry_icon'>
+					<img src='./static/favicon.ico' class='entry_icon' id='$day.date_t.day'>
 				</td>
 
 			$if i == 6:
@@ -35,3 +35,42 @@ $def with (month)
 				$ i += 1
 
 	</table>
+
+<script type='text/javascript'>
+	function MyToolTip(el) {
+		this.tt = el;
+		this.initEvents();
+	} 
+
+	MyToolTip.prototype = {
+		initEvents: function() {
+			var obj = this;
+			var tooltip = jQuery('<div class=\'tooltip\'> AHHHHHHHH tooltip. </div>')
+			tooltip.appendTo('body')
+			var iconPosition = obj.tt.position();
+
+			tooltip.css({
+				top: iconPosition.top - tooltip.outerHeight(),
+				left: iconPosition.left,
+				position: 'absolute', 
+			});		
+
+			obj.tt.hover(function() {
+				tooltip.addClass('active');
+
+			}, function() {
+				// mouseleave
+				tooltip.removeClass('active');
+
+			})
+		}
+	};
+		
+	jQuery(function() {
+			var tt = new MyToolTip(jQuery('#9 > .entry_icon'))
+
+			// var icon_list = jQuery.find('.entry_icon');
+	});
+
+
+</script>
