@@ -14,6 +14,7 @@ urls = (
 	'/date', 'date',
 	'/error', 'error',
 	'/login', 'login',
+	'/register', 'register',
 	'/entries', 'entries'
 )
 
@@ -82,7 +83,7 @@ class login():
 			form.Textbox('Username:'),
 			form.Textbox('Password:'))
 
-		return render.layout(render.login(form=lform))
+		return render.layout(render.login())
 
 	def POST(self):
 		return 'POST'
@@ -93,6 +94,27 @@ class entries():
 		da = render.date(days=month.days)
 
 		return render.layout(da, '..')
+
+class register():
+	def POST(self):
+		db.register(web.input().username, web.input().password, web.input().email)
+		return render.layout(render.index('Registration Successful.'))
+
+class login():
+	def GET(self):
+		return render.layout(render.login())
+
+
+	def POST(self):
+		res = db.login(web.input().username, web.input().password)
+		if res == None:
+			msg = "No such user exists."
+		elif res == False:
+			msg = "Wrong password."
+		else:
+			msg = "Successfully logged in."
+			session.user = web.input().username
+		return render.layout(render.index(msg))
 
 class error():
 	def GET(self):

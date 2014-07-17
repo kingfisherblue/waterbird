@@ -208,3 +208,35 @@ input#submit-button:hover {
 	margin-top: -5px;
 	transition: all 0.3s ease-out;
 }
+
+#logregform {
+	position: 			relative;
+	width:				300px;
+/*	background-color: 	white;
+	border: 			10px solid black;*/
+	margin: 			auto;
+  	top: 				50%;
+}
+
+#logregform h1 {
+	display: 	block;
+}
+
+#loginform, #regform {
+	position: 	absolute;
+	display: 	inline-block;
+	width: 		50%;
+	top:		0;
+}
+
+#loginform{
+	left: 	0;
+} 
+
+#regform {
+	right: 	0;
+}
+
+#logregform p , #regform p{
+	display: inline-block;
+}

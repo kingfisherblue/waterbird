@@ -67,9 +67,12 @@ $def with (month)
 	};
 		
 	jQuery(function() {
-			var tt = new MyToolTip(jQuery('#9 > .entry_icon'))
+			//var tt = new MyToolTip(jQuery('#9 > .entry_icon'))
 
-			// var icon_list = jQuery.find('.entry_icon');
+			var icon_list = jQuery.find('.entry_icon');
+			for (i=0; i<icon_list.length; i++) {
+				var tt = new MyToolTip(jQuery(icon_list[i]));
+			}
 	});
 
 

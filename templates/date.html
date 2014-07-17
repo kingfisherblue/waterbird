@@ -3,13 +3,21 @@ $def with (days)
 
 $def makeEntry(d):
 	<span id = 'entry-header'>$calmonth[day.date_t.month] $day.date_t.day</span>
-	<form action="/date" method="POST">
+	<form action="/date" method="POST" class='entry'>
 	    <div id="entry-textarea">
 	    		$:d.entry
 	    </div>
 	    <textarea id="hiddeninput" name="entry" style="display: none;"></textarea>
 	    <input id ="submit-button" type="submit" value="SAVE" style="display: none;"> 
+	    <button style="display: none;">Cancel</button>
 	</form>
+
+
+<span id='entry-options'>
+	<a href="#">Today</a>
+	<a href="/entries">This Month</a>
+	<a href="#">All Time</a>
+</span>
 
 $for day in days:
 	$if day and day.hasEntry:
@@ -19,21 +27,72 @@ $for day in days:
 
     jQuery(function () {
 
-    	jQuery('#entry-textarea').click(function() {
-    		jQuery('#entry-textarea').redactor();
-    		jQuery('#submit-button').show();
-    	});
+    	function Editor(el) {
+    		this.ed = el;
+    		this.txt = this.ed.children('div');
+    		this.btn = this.ed.children('input');
+    		this.cancel = this.ed.children('button');
+    		this.hidden = this.ed.children('textarea');
+    		this.initEvents();
+    	}
 
-    	jQuery('#submit-button').click(function() {
-    		var entry_text = jQuery('#entry-textarea').html();
-    		// checks for actual text and not just tags
-    		// needs testing
-    		if (entry_text.match('[^<>]\\s*(\\w)+[\\s\\w]*[^<>]') != null) {
-	    		jQuery('#hiddeninput').val(entry_text);
-	    		jQuery("#entry-textarea").destroyEditor();
-	            jQuery('#submit-button').hide();
-        	}
-    	});
+    	Editor.prototype = {
+
+    		initEvents : function() {
+    			var obj = this;
+
+    		    obj.txt.click(function() {
+    		    	console.log('Clicked txt.')
+	    			console.log(obj.txt);
+	    			obj.txt.redactor();
+	    			obj.btn.show();
+	    			obj.cancel.show();
+	    		});
+
+	    		obj.btn.click(function(event) {
+	    			console.log('Clicked button.');
+		    		var entry_text = this.div.html();
+		    		// checks for actual text and not just tags
+		    		// needs testing
+		    		if (entry_text.match('[^<>]\\s*(\\w)+[\\s\\w]*[^<>]') == null) { 
+		    			event.preventDefault();
+		    		} else {
+		    			this.hidden.val(entry_text); 
+		    		}
+				    obj.txt.destroyEditor();
+		        	obj.btn.hide();
+	        	});
+
+	        	obj.cancel.click(function() {
+	        		obj.txt.destroyEditor();
+	        		obj.btn.hide();
+	        		obj.cancel.hide();
+	        	});
+    		}
+    	};
+
+
+        var ed_list = jQuery.find('.entry');
+        for (i=0; i<ed_list.length; i++) {
+            var dd = new Editor(jQuery(ed_list[i]));
+        }
+
+
+    	// jQuery('#entry-textarea').click(function() {
+    	// 	jQuery('#entry-textarea').redactor();
+    	// 	jQuery('#submit-button').show();
+    	// });
+
+    	// jQuery('#submit-button').click(function() {
+    	// 	var entry_text = jQuery('#entry-textarea').html();
+    	// 	// checks for actual text and not just tags
+    	// 	// needs testing
+    	// 	if (entry_text.match('[^<>]\\s*(\\w)+[\\s\\w]*[^<>]') != null) {
+	    // 		jQuery('#hiddeninput').val(entry_text);
+	    // 		jQuery("#entry-textarea").destroyEditor();
+	    //         jQuery('#submit-button').hide();
+     //    	}
+    	// });
 
         jQuery(document).mouseup(function(e) {
         	jQuery('.wrapper-dropdown').removeClass('active');

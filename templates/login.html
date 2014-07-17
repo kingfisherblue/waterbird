@@ -1,6 +1,27 @@
-$def with (form)
-
-<form name="main" method="post"> 
-	$:form.render()
+<div id='logregform'>
+<form id="loginform" name="login" action="login" method="post">
+	<p>
+		<label>Username: </label> 
+		<input id="login-username" name='username' type="text"/>
+		<label>Password:</label>
+		<input id="login-pw" name='password' type="password"/>
+	</p>
 	<input type="submit" />    
 </form>
+
+
+<form id="regform" name="register" action="register" method="post">
+	<p>
+		<label>Username: </label> 
+		<input id="reg-username" name='username' type="text"/>
+		<label>Password:</label>
+		<input id="reg-pw" name='password' type="password"/>
+		<label>Confirm Password:</label>
+		<input id="reg-pw-conf" name='password-conf' type="password"/>
+		<label>Email:</label>
+		<input id="reg-email" name='email' type="text"/>
+	</p>
+	<input type="submit" />    
+</form>
+
+</div>
